@@ -45,11 +45,21 @@ var getUserRepos = function(user) {
 };
 
 var displayRepos = function(repos, searchTerm) {
+  
+  }
   // check if api returned any repos
   if (repos.length === 0) {
     repoContainerEl.textContent = "No repositories found.";
     return;
   }
+
+  for (var i = 0; i < repos.length; i++) {
+    var repoName = repos[i].owner.login + "/" + repos[i].name 
+    var repoE1 = document.createElement("a");
+    repoE1.classLIst = "list-item flex-row justify-space-between aling-center"
+    repoE1.setAttribute("href", "./single-repo.html");
+    var titleEl = document.createElement("span");
+    titleEl.textContext = repoName;
 
   repoSearchTerm.textContent = searchTerm;
 
