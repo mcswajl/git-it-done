@@ -1,125 +1,213 @@
-var userFormEl = document.querySelector("#user-form");
-var languageButtonsEl = document.querySelector("#language-buttons");
-var nameInputEl = document.querySelector("#username");
-var repoContainerEl = document.querySelector("#repos-container");
-var repoSearchTerm = document.querySelector("#repo-search-term");
+var cities = [];
 
-var formSubmitHandler = function(event) {
-  // prevent page from refreshing
-  event.preventDefault();
+var cityFormEl=document.querySelector("#city-search-form");
+var cityInputEl=document.querySelector("#city");
+var weatherContainerEl=document.querySelector("#current-weather-container");
+var citySearchInputEl = document.querySelector("#searched-city");
+var forecastTitle = document.querySelector("#forecast");
+var forecastContainerEl = document.querySelector("#fiveday-container");
+var pastSearchButtonEl = document.querySelector("#past-search-buttons");
 
-  // get value from input element
-  var username = nameInputEl.value.trim();
+var formSumbitHandler = function(event){
+    event.preventDefault();
+    var city = cityInputEl.value.trim();
+    if(city){
+        getCityWeather(city);
+        get5Day(city);
+        cities.unshift({city});
+        cityInputEl.value = "";
+    } else{
+        alert("Enter a City");
+    }
+    saveSearch();
+    pastSearch(city);
+}
 
-  if (username) {
-    getUserRepos(username);
-
-    // clear old content
-    repoContainerEl.textContent = "";
-    nameInputEl.value = "";
-  } else {
-    alert("Please enter a GitHub username");
-  }
+var saveSearch = function(){
+    localStorage.setItem("cities", JSON.stringify(cities));
 };
 
-var buttonClickHandler = function(event) {
-  // get the language attribute from the clicked element
-  var language = event.target.getAttribute("data-language");
+var getCityWeather = function(city){
+    var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
+    var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
 
-  if (language) {
-    getFeaturedRepos(language);
-
-    // clear old content
-    repoContainerEl.textContent = "";
-  }
-};
-
-var getUserRepos = function(user) {
-  // format the github api url
-  var apiUrl = "https://api.github.com/users/" + user + "/repos";
-
-  // make a get request to url
-  fetch(apiUrl)
-    .then(function(response) {
-      // request was successful
-      if (response.ok) {
-        console.log(response);
-        response.json().then(function(data) {
-          console.log(data);
-          displayRepos(data, user);
+    fetch(apiURL)
+    .then(function(response){
+        response.json().then(function(data){
+            displayWeather(data, city);
         });
-      } else {
-        alert('Error: GitHub User Not Found');
-      }
-    })
-    .catch(function(error) {
-      alert("Unable to connect to GitHub");
     });
 };
 
-var getFeaturedRepos = function(language) {
-  // format the github api url
-  var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+var displayWeather = function(weather, searchCity){
+   //clear old content
+   weatherContainerEl.textContent= "";  
+   citySearchInputEl.textContent=searchCity;
 
-  // make a get request to url
-  fetch(apiUrl).then(function(response) {
-    // request was successful
-    if (response.ok) {
-      response.json().then(function(data) {
-        displayRepos(data.items, language);
-      });
-    } else {
-      alert("Error: " + response.statusText);
+   //console.log(weather);
+
+   //create date element
+   var currentDate = document.createElement("span")
+   currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+   citySearchInputEl.appendChild(currentDate);
+
+   //create an image element
+   var weatherIcon = document.createElement("img")
+   weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`);
+   citySearchInputEl.appendChild(weatherIcon);
+
+   //create a span element to hold temperature data
+   var temperatureEl = document.createElement("span");
+   temperatureEl.textContent = "Temperature: " + weather.main.temp + " °F";
+   temperatureEl.classList = "list-group-item"
+  
+   //create a span element to hold Humidity data
+   var humidityEl = document.createElement("span");
+   humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
+   humidityEl.classList = "list-group-item"
+
+   //create a span element to hold Wind data
+   var windSpeedEl = document.createElement("span");
+   windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH";
+   windSpeedEl.classList = "list-group-item"
+
+   //append to container
+   weatherContainerEl.appendChild(temperatureEl);
+
+   //append to container
+   weatherContainerEl.appendChild(humidityEl);
+
+   //append to container
+   weatherContainerEl.appendChild(windSpeedEl);
+
+   var lat = weather.coord.lat;
+   var lon = weather.coord.lon;
+   getUvIndex(lat,lon)
+}
+
+var getUvIndex = function(lat,lon){
+    var apiKey = "844421298d794574c100e3409cee0499"
+    var apiURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
+    fetch(apiURL)
+    .then(function(response){
+        response.json().then(function(data){
+            displayUvIndex(data)
+           // console.log(data)
+        });
+    });
+    //console.log(lat);
+    //console.log(lon);
+}
+ 
+var displayUvIndex = function(index){
+    var uvIndexEl = document.createElement("div");
+    uvIndexEl.textContent = "UV Index: "
+    uvIndexEl.classList = "list-group-item"
+
+    uvIndexValue = document.createElement("span")
+    uvIndexValue.textContent = index.value
+
+    if(index.value <=2){
+        uvIndexValue.classList = "favorable"
+    }else if(index.value >2 && index.value<=8){
+        uvIndexValue.classList = "moderate "
     }
-  });
+    else if(index.value >8){
+        uvIndexValue.classList = "severe"
+    };
+
+    uvIndexEl.appendChild(uvIndexValue);
+
+    //append index to current weather
+    weatherContainerEl.appendChild(uvIndexEl);
+}
+
+var get5Day = function(city){
+    var apiKey = "844421298d794574c100e3409cee0499"
+    var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
+//https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
+    fetch(apiURL)
+    .then(function(response){
+        response.json().then(function(data){
+           display5Day(data);
+        });
+    });
 };
 
-var displayRepos = function(repos, searchTerm) {
-  // check if api returned any repos
-  if (repos.length === 0) {
-    repoContainerEl.textContent = "No repositories found.";
-    return;
-  }
+var display5Day = function(weather){
+    forecastContainerEl.textContent = ""
+    forecastTitle.textContent = "5-Day Weather Forecast:";
 
-  repoSearchTerm.textContent = searchTerm;
+    var forecast = weather.list;
+        for(var i=5; i < forecast.length; i=i+8){
+       var dailyForecast = forecast[i];
+        
+       
+       var forecastEl=document.createElement("div");
+       forecastEl.classList = "card bg-primary text-light m-2";
 
-  // loop over repos
-  for (var i = 0; i < repos.length; i++) {
-    // format repo name
-    var repoName = repos[i].owner.login + "/" + repos[i].name;
+       //console.log(dailyForecast)
 
-    // create a link for each repo
-    var repoEl = document.createElement("a");
-    repoEl.classList = "list-item flex-row justify-space-between align-center";
-    repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
+       //create date element
+       var forecastDate = document.createElement("h5")
+       forecastDate.textContent= moment.unix(dailyForecast.dt).format("MMM D, YYYY");
+       forecastDate.classList = "card-header text-center"
+       forecastEl.appendChild(forecastDate);
 
-    // create a span element to hold repository name
-    var titleEl = document.createElement("span");
-    titleEl.textContent = repoName;
+       
+       //create an image element
+       var weatherIcon = document.createElement("img")
+       weatherIcon.classList = "card-body text-center";
+       weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);  
 
-    // append to container
-    repoEl.appendChild(titleEl);
+       //append to forecast card
+       forecastEl.appendChild(weatherIcon);
+       
+       //create temperature span
+       var forecastTempEl=document.createElement("span");
+       forecastTempEl.classList = "card-body text-center";
+       forecastTempEl.textContent = dailyForecast.main.temp + " °F";
 
-    // create a status element
-    var statusEl = document.createElement("span");
-    statusEl.classList = "flex-row align-center";
+        //append to forecast card
+        forecastEl.appendChild(forecastTempEl);
 
-    // check if current repo has issues or not
-    if (repos[i].open_issues_count > 0) {
-      statusEl.innerHTML =
-        "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+       var forecastHumEl=document.createElement("span");
+       forecastHumEl.classList = "card-body text-center";
+       forecastHumEl.textContent = dailyForecast.main.humidity + "  %";
+
+       //append to forecast card
+       forecastEl.appendChild(forecastHumEl);
+
+        // console.log(forecastEl);
+       //append to five day container
+        forecastContainerEl.appendChild(forecastEl);
     }
 
-    // append to container
-    repoEl.appendChild(statusEl);
+}
 
-    // append container to the dom
-    repoContainerEl.appendChild(repoEl);
-  }
-};
+var pastSearch = function(pastSearch){
+ 
+    // console.log(pastSearch)
 
-// add event listeners to form and button container
-userFormEl.addEventListener("submit", formSubmitHandler);
-languageButtonsEl.addEventListener("click", buttonClickHandler);
+    pastSearchEl = document.createElement("button");
+    pastSearchEl.textContent = pastSearch;
+    pastSearchEl.classList = "d-flex w-100 btn-light border p-2";
+    pastSearchEl.setAttribute("data-city",pastSearch)
+    pastSearchEl.setAttribute("type", "submit");
+
+    pastSearchButtonEl.prepend(pastSearchEl);
+}
+
+
+var pastSearchHandler = function(event){
+    var city = event.target.getAttribute("data-city")
+    if(city){
+        getCityWeather(city);
+        get5Day(city);
+    }
+}
+
+// pastSearch();
+
+cityFormEl.addEventListener("submit", formSumbitHandler);
+pastSearchButtonEl.addEventListener("click", pastSearchHandler);
