@@ -1,6 +1,23 @@
 .search-column{
   background-color:	#D3D3D3;
 }
+h2 {
+  font-size: 24px;
+  text-align: center;
+}
+
+p {
+  font-size: 24px;
+  text-align: center;
+}
+
+.bg-primary {
+  background-color: rgb(204, 204, 218);
+}
+
+.five-day-forecast  {
+  background-color: rgb(204, 204, 218);
+}
 
 .list-group-item{
   line-height: 0.5;

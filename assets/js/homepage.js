@@ -1,21 +1,21 @@
 var cities = [];
 
 var nameFormEl=document.querySelector("#city-search-form");
-var nameEl=document.querySelector("#city");
+// var nameEl=document.querySelector("#city");
 var weatherContainer=document.querySelector("#current-weather-container");
-var nameInputEl = document.querySelector("#searched-city");
+var nameInputEl = document.querySelector("#city");
 var forecastTitle = document.querySelector("#forecast");
 var weatherContainerEl = document.querySelector("#fiveday-container");
-var recentSearchsEl = document.querySelector("#past-search-buttons");
+var recentSearchsEl = document.querySelector("#recent-search-buttons");
 
 var formSumbitHandler = function(event){
     event.preventDefault();
-    var city = citySubmitInputEl.value.trim();
+    var city = nameInputEl.value.trim();
     if(city){
         getCityWeather(city);
         get5Day(city);
         cities.unshift({city});
-        citySubmitInputEl.value = "";
+        nameInputEl.value = "";
     } else{
         alert("Enter a City");
     }
@@ -31,10 +31,12 @@ var getCityWeather = function(city){
     var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
 
+
     fetch(apiURL)
     .then(function(response){
         response.json().then(function(data){
             displayWeather(data, city);
+            console.log(data)
         });
     });
 };
@@ -86,7 +88,7 @@ var displayWeather = function(weather, searchCity){
 }
 
 var getUvIndex = function(lat,lon){
-    var apiKey = "844421298d794574c100e3409cee0499"
+    var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
     fetch(apiURL)
     .then(function(response){
@@ -123,7 +125,7 @@ var displayUvIndex = function(index){
 }
 
 var get5Day = function(city){
-    var apiKey = "844421298d794574c100e3409cee0499"
+    var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
 //https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
     fetch(apiURL)
@@ -179,7 +181,7 @@ var display5Day = function(weather){
        forecastEl.appendChild(forecastHumEl);
 
         // console.log(forecastEl);
-       //append to five day container
+       //append to 5 day container
         weatherContainerEl.appendChild(forecastEl);
     }
 
