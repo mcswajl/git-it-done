@@ -8,6 +8,12 @@ var forecastTitle = document.querySelector("#forecast");
 var weatherContainerEl = document.querySelector("#fiveday-container");
 var recentSearchsEl = document.querySelector("#recent-search-buttons");
 
+$(document).ready(function () {
+ var currentDate = moment().format("dddd MMM Do YYYY, h:mm a");
+    $("#date-time").append(currentDate);
+    currentTime = moment().hour();
+})
+
 var formSumbitHandler = function(event){
     event.preventDefault();
     var city = nameInputEl.value.trim();
