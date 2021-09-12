@@ -10,7 +10,7 @@
 <body>
 
     <!-- Title and currrent date and time-->
-    <header class = "bg-dark text-white text-center p-2">
+    <header class = "bg-primary text-white text-center p-2">
       <h4>Weather Dashboard</h4> 
       <p>Current Date and Time is <span id="date-time"></span>.</p>
       
@@ -24,7 +24,7 @@
                 <form class = "border p-2" id = "city-search-form">
                     <h4>Search for a City</h2>
                     <input id="city" type = "text" autofocus = "true" class = "form-input"/>
-                    <button class = "btn btn-primary" type = "submit">Search</button>
+                    <button class = "btn btn-secondary" type = "submit">Get Weather</button>
                 </form>
                 <div class = "recent-search border" id = "recent-search-buttons"></div>
             </div>
@@ -36,7 +36,7 @@
                         <div id = "current-weather-container" class = "list-group"></div>
                     </div>  
                 </div>
-            </div>
+            
 
                 <!-- This div displays the five day weather forecast-->
                 <div class = "row border" id = "five-day-forecast">

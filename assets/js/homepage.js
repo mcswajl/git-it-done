@@ -1,5 +1,6 @@
 var cities = [];
 
+// global variables
 var nameFormEl=document.querySelector("#city-search-form");
 // var nameEl=document.querySelector("#city");
 var weatherContainer=document.querySelector("#current-weather-container");
@@ -8,12 +9,14 @@ var forecastTitle = document.querySelector("#forecast");
 var weatherContainerEl = document.querySelector("#fiveday-container");
 var recentSearchsEl = document.querySelector("#recent-search-buttons");
 
+// Current Date and Time function
 $(document).ready(function () {
  var currentDate = moment().format("dddd MMM Do YYYY, h:mm a");
     $("#date-time").append(currentDate);
     currentTime = moment().hour();
 })
 
+// Perform the search on user input, save recent to local storage
 var formSumbitHandler = function(event){
     event.preventDefault();
     var city = nameInputEl.value.trim();
@@ -33,6 +36,7 @@ var saveSearch = function(){
     localStorage.setItem("cities", JSON.stringify(cities));
 };
 
+//My API key that was emailed to me with
 var getCityWeather = function(city){
     var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
@@ -47,52 +51,52 @@ var getCityWeather = function(city){
     });
 };
 
+// display the API response and clear old content
 var displayWeather = function(weather, searchCity){
-   //clear old content
-   weatherContainer.textContent= "";  
-   nameInputEl.textContent=searchCity;
+    weatherContainer.textContent= "";  
+    nameInputEl.textContent=searchCity;
 
-   //console.log(weather);
+   
 
-   //create date element
-   var currentDate = document.createElement("span")
+   //
+   /*var currentDate = document.createElement("span")
    currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
-   nameInputEl.appendChild(currentDate);
+   nameInputEl.appendChild(currentDate);*/
 
-   //create an image element
+   //creates an image element for the weather icon
    var weatherIcon = document.createElement("img")
    weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`);
    nameInputEl.appendChild(weatherIcon);
 
-   //create a span element to hold temperature data
+   //creates an element for temperature data
    var temperatureEl = document.createElement("span");
    temperatureEl.textContent = "Temperature: " + weather.main.temp + " °F";
    temperatureEl.classList = "list-group-item"
   
-   //create a span element to hold Humidity data
+   //creates an element for Humidity data
    var humidityEl = document.createElement("span");
    humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
    humidityEl.classList = "list-group-item"
 
-   //create a span element to hold Wind data
+   //creates an element for Wind data
    var windSpeedEl = document.createElement("span");
    windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH";
    windSpeedEl.classList = "list-group-item"
 
-   //append to container
+   //append child to container
    weatherContainer.appendChild(temperatureEl);
 
-   //append to container
+   //append child to container
    weatherContainer.appendChild(humidityEl);
 
-   //append to container
+   //append child to container
    weatherContainer.appendChild(windSpeedEl);
 
    var lat = weather.coord.lat;
    var lon = weather.coord.lon;
    getUvIndex(lat,lon)
 }
-
+//this is how the OpenWeather API works, unique
 var getUvIndex = function(lat,lon){
     var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
@@ -100,13 +104,12 @@ var getUvIndex = function(lat,lon){
     .then(function(response){
         response.json().then(function(data){
             displayUvIndex(data)
-           // console.log(data)
+        
         });
     });
-    //console.log(lat);
-    //console.log(lon);
-}
  
+}
+ //variables funtion so the correct color is displayed on the elements
 var displayUvIndex = function(index){
     var uvIndexEl = document.createElement("div");
     uvIndexEl.textContent = "UV Index: "
@@ -126,14 +129,14 @@ var displayUvIndex = function(index){
 
     uvIndexEl.appendChild(uvIndexValue);
 
-    //append index to current weather
+    //append child to current weather
     weatherContainer.appendChild(uvIndexEl);
 }
 
+//Again, this is how this API works, unique
 var get5Day = function(city){
     var apiKey = "1a16fe3c1bf7cb4b5145531729d9d547"
     var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
-//https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
     fetch(apiURL)
     .then(function(response){
         response.json().then(function(data){
@@ -142,6 +145,7 @@ var get5Day = function(city){
     });
 };
 
+// variable display of the 5 day weather
 var display5Day = function(weather){
     weatherContainerEl.textContent = ""
     forecastTitle.textContent = "5-Day Weather Forecast:";
@@ -154,49 +158,42 @@ var display5Day = function(weather){
        var forecastEl=document.createElement("div");
        forecastEl.classList = "card bg-primary text-light m-2";
 
-       //console.log(dailyForecast)
 
-       //create date element
+       //creates date for each day
        var forecastDate = document.createElement("h5")
        forecastDate.textContent= moment.unix(dailyForecast.dt).format("MMM D, YYYY");
        forecastDate.classList = "card-header text-center"
        forecastEl.appendChild(forecastDate);
 
        
-       //create an image element
+       //creates an image weather icon
        var weatherIcon = document.createElement("img")
        weatherIcon.classList = "card-body text-center";
        weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);  
 
-       //append to forecast card
+       //append child card
        forecastEl.appendChild(weatherIcon);
        
-       //create temperature span
+       //creates a temperature span
        var forecastTempEl=document.createElement("span");
        forecastTempEl.classList = "card-body text-center";
        forecastTempEl.textContent = dailyForecast.main.temp + " °F";
 
-        //append to forecast card
+        //append child card
         forecastEl.appendChild(forecastTempEl);
 
        var forecastHumEl=document.createElement("span");
        forecastHumEl.classList = "card-body text-center";
        forecastHumEl.textContent = dailyForecast.main.humidity + "  %";
 
-       //append to forecast card
+       //append child to card
        forecastEl.appendChild(forecastHumEl);
-
-        // console.log(forecastEl);
-       //append to 5 day container
         weatherContainerEl.appendChild(forecastEl);
     }
 
 }
-
+//recent search function
 var recentSearch = function(recentSearch){
- 
-    // console.log(recentSearch)
-
     recentSearchEl = document.createElement("button");
     recentSearchEl.textContent = recentSearch;
     recentSearchEl.classList = "d-flex w-100 btn-light border p-2";
@@ -215,7 +212,7 @@ var recentSearchHandler = function(event){
     }
 }
 
-// recentSearch();
+// listener for submit and click
 
 nameFormEl.addEventListener("submit", formSumbitHandler);
 recentSearchsEl.addEventListener("click", recentSearchHandler);
