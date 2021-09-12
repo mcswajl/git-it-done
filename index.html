@@ -8,13 +8,16 @@
     <title>Current Weather Dashboard</title>
 </head>
 <body>
+
+    <!-- Title and currrent date and time-->
     <header class = "bg-dark text-white text-center p-2">
-      <!--<p class="lead">A simple calendar app for scheduling your work day</p>-->
       <h4>Weather Dashboard</h4> 
       <p>Current Date and Time is <span id="date-time"></span>.</p>
       
     </header>
-    <main class="container-fluid">
+
+    <!-- This container holds everything besides the header and footer-->
+    <main class="container">
         <div class = "row">
             <div class="col-12 col-md-3 p-2 search-column">
                 <form class = "border p-2" id = "city-search-form">
@@ -31,6 +34,8 @@
                         <div id = "current-weather-container" class = "list-group"></div>
                     </div>  
                 </div>
+
+                <!-- This div displays the five day weather forecast-->
                 <div class = "row border" id = "five-day-forecast">
                         <h2 class= "col-12" id = "forecast"></h2>
                         <div class = "d-flex" id = "fiveday-container"></div>
@@ -38,6 +43,8 @@
             </div>
         </div>
     </main>
+
+    <!-- link to js scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
