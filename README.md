@@ -1,18 +1,17 @@
-# 06 Server-Side APIs: Weather Dashboard
+# ## User Story: Weather Dashboard
 
-Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+My weather dashboard retrieves current weather data from another application's API was the user types in the name of a city and clicks search. I have several third-party APIs sourced in my html allowing me to access their data and functionality by making requests with specific parameters to a URL. I included code to display the current data and time. Also, at the bottom of the 5 day forecast I included a link (hyperlinked text) to the Open weather webpage that explains the weather icons symbols. I learned more about bootstrap during this challenge, things like, bg-primary, p-2, container-fluid,etc.
+
+## Screenshot
+
+Screenshot of my website
+![Screenshot](./assets/images/screenshot.jpg)
+
+## I was provided the following API source and told to use local storage
 
 Use the [OpenWeather One Call API](https://openweathermap.org/api/one-call-api) to retrieve weather data for cities. Read through the documentation for setup and usage instructions. You will use `localStorage` to store any persistent data.
 
-## User Story
-
-```
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
-```
-
-## Acceptance Criteria
+## This is the acceptance criteria that I had to include in my website
 
 ```
 GIVEN a weather dashboard with form inputs
@@ -27,18 +26,20 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 ```
+## This is the image file provided to me as an example webpage
 
 The following image demonstrates the application functionality:
 
 ![weather dashboard demo](./Assets/06-server-side-apis-homework-demo.png)
 
-## Review
+## Tools used
 
-You are required to submit the following for review:
+html
+css
+javascript
+boostrap
+GitBash
+GitHub
+VScode
 
-* The URL of the deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
-
-- - -
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+## Tools used
