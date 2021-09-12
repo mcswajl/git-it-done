@@ -17,7 +17,8 @@
     </header>
 
     <!-- This container holds everything besides the header and footer-->
-    <main class="container">
+    <!-- Also this container uses bootstrap "-fluid means 100%"-->
+    <main class="container-fluid">
         <div class = "row">
             <div class="col-12 col-md-3 p-2 search-column">
                 <form class = "border p-2" id = "city-search-form">
@@ -27,6 +28,7 @@
                 </form>
                 <div class = "recent-search border" id = "recent-search-buttons"></div>
             </div>
+            
             <div class="col-12 col-md-9">
                 <div class = "row border selected-city" id = "current-forecast">
                     <div class = "col-12">
@@ -34,6 +36,7 @@
                         <div id = "current-weather-container" class = "list-group"></div>
                     </div>  
                 </div>
+            </div>
 
                 <!-- This div displays the five day weather forecast-->
                 <div class = "row border" id = "five-day-forecast">
