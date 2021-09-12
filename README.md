@@ -30,15 +30,16 @@ THEN I am again presented with current and future conditions for that city
 ## GitHub and Webpage Links
 
 My webpage URL https://mcswajl.github.io/git-it-done/
+
 My GitHub URL https://github.com/mcswajl/git-it-done
 
 ## Tools used
 
-html
-css
-javascript
-boostrap
-GitBash
-GitHub
-VScode
+html, 
+css, 
+javascript, 
+boostrap, 
+GitBash, 
+GitHub, 
+VScode, 
 
