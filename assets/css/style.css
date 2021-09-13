@@ -11,7 +11,11 @@ h2 {
 }
 
 .d-flex {
-  color: #D3D3D3;
+  color: #fcf9f9f6;
+}
+
+.recent-search-border {
+  color: black;
 }
 
 p {
