@@ -156,7 +156,7 @@ var display5Day = function(weather){
         
        
        var forecastEl=document.createElement("div");
-       forecastEl.classList = "card bg-primary text-light m-2";
+       forecastEl.classList = "card bg-primary text-bold m-2";
 
 
        //creates date for each day
