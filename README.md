@@ -1,6 +1,7 @@
 # ## User Story: Weather Dashboard
 
 My weather dashboard retrieves current weather data from another application's API was the user types in the name of a city and clicks search. I have several third-party APIs sourced in my html allowing me to access their data and functionality by making requests with specific parameters to a URL. I included code to display the current data and time. Also, at the bottom of the 5 day forecast I included a link (hyperlinked text) to the Open weather webpage that explains the weather icons symbols. I learned more about bootstrap during this challenge, things like, bg-primary, p-2, container-fluid,etc.
+I was finally able to get the gradient color to work using bootstrap, my gradient is top to bottom (different from the reference image) but it works and I understand the functionality.
 
 ## Screenshot
 
