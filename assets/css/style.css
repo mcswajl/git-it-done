@@ -6,6 +6,10 @@ h2 {
   text-align: center;
 }
 
+.bg-primary  {
+  background-image: linear-gradient(rgb(20, 6, 221), rgb(125, 181, 247));
+}
+
 p {
   font-size: 16px;
   text-align: center;
