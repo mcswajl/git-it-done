@@ -10,6 +10,10 @@ h2 {
   background-image: linear-gradient(rgb(21, 14, 121), rgb(76, 90, 219));
 }
 
+.d-flex {
+  color: #D3D3D3;
+}
+
 p {
   font-size: 16px;
   text-align: center;
